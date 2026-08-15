@@ -70,3 +70,10 @@ MIT, see `LICENSE`. This covers the code in this repository. The chlorophyll mod
 `chla_vibronic_TEA.txt` is reproduced under CC BY 4.0 from the reference given in its header, and
 `1JB0.pdb` is the Protein Data Bank entry for the *Synechococcus elongatus* photosystem I core
 (Jordan et al., *Nature* **411**, 909, 2001), redistributed under the PDB's terms of use.
+
+## Citation
+
+If you use this code, please cite:
+
+> A. Pandey and R. Liang, *A Cross-Species Comparison of Excitation Energy Transfer in Red-Lineage
+> Photosystem I*, ChemRxiv, https://doi.org/10.26434/chemrxiv.15006070/v1
