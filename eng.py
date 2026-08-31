@@ -777,7 +777,11 @@ def _kabsch_c(P, Q):
     R = Vt.T @ np.diag([1.0, 1.0, d]) @ U.T
     return R, Q.mean(0) - R @ P.mean(0)
 def _setup_chlc_tresp(chlorophylls):
-    if not USE_TRESP or _CHLC_COORDS is None:
+    n_c = sum(1 for chl in chlorophylls if chl.get("ptype", "a") == "c")
+    if not USE_TRESP or n_c == 0:
+        return chlorophylls
+    if _CHLC_COORDS is None:
+        print("[TrEsp] Chl c: point-dipole fallback for %d pigments (chlc_template.json not loaded)" % n_c)
         return chlorophylls
     n = 0
     for chl in chlorophylls:
@@ -793,7 +797,8 @@ def _setup_chlc_tresp(chlorophylls):
         chl["tresp_q"] = q
         chl["tresp_xyz"] = (R @ _CHLC_COORDS.T).T + t
         n += 1
-    print("[TrEsp] Chl c clouds (superposed): %d" % n)
+    print("[TrEsp] Chl c clouds (superposed, CHELPG template): %d of %d%s"
+          % (n, n_c, "" if n == n_c else "; point-dipole fallback for the rest"))
     return chlorophylls
 
 def build_tresp_clouds(chlorophylls):
@@ -810,7 +815,7 @@ def build_tresp_clouds(chlorophylls):
         chl["tresp_xyz"] = np.array([abn[a] for a in names]) if names else np.zeros((0, 3))
         if q.size == len(CHG_CHLA_RAW): n_full += 1
     if USE_TRESP:
-        print(f"[TrEsp] Chl a clouds: {n_a} pigments ({n_full} complete); Chl b/c point-dipole; scale={TRESP_SCALE}")
+        print(f"[TrEsp] Chl a clouds: {n_a} pigments ({n_full} complete); Chl b point-dipole; scale={TRESP_SCALE}")
     return chlorophylls
 def tresp_coupling(chl_m, chl_n):
     qm, Xm = chl_m["tresp_q"], chl_m["tresp_xyz"]
