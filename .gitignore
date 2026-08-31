@@ -7,3 +7,7 @@ ci_summary.txt
 excitation_decay.out
 population_dynamics.*
 overall_system_analysis_MC_AVG.out
+*.npz
+provenance.json
+exciton_me.out
+site_energies.txt
